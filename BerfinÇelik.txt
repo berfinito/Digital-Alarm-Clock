@@ -1,0 +1,611 @@
+//https://www.tinkercad.com/things/3OVEar1RCYH-swanky-jaban/editel?sharecode=QnlYFLxDOTLiwWwTzl0UAswpl2NkMNvumacSdRoKST4
+
+
+
+#include <LiquidCrystal.h>
+#include <string.h>
+#include <time.h>
+
+#define piezo 7
+#define tempSensor A0
+
+#define button1 13
+#define button2 10
+#define button3 9
+#define button4 8
+
+long buttonTimer = 0;
+long buttonHold = 3000;
+
+boolean buttonOn1 = false;
+boolean isHolding1 = false;
+
+boolean buttonOn1a = false;
+boolean isHolding1a = false;
+
+boolean buttonOn2aa = false;
+boolean isHolding2aa = false;
+
+boolean buttonOn2a = false;
+boolean isHolding2a = false;
+
+boolean buttonOn3a = false;
+boolean isHolding3a = false;
+
+boolean buttonOn3b = false;
+boolean isHolding3b = false;
+
+boolean buttonOn2b = false;
+boolean isHolding2b = false;
+
+boolean buttonOn2 = false;
+boolean isHolding2 = false;
+
+boolean buttonOn3 = false;
+boolean isHolding3 = false;
+
+boolean buttonOn4 = false;
+boolean isHolding4 = false;
+
+int whatIf = 10;
+int count= 0;
+int counta= 0;
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+bool AlarmON = false;
+bool timesetup = false;
+bool timesetupa = false;
+int h, m;
+int s = 56;
+int ah, am;
+int TempSignal = 0;
+bool f;
+
+int tt = 0;
+
+bool hourSwitch = true;
+String sun = "   ";  
+
+void hourize(int H, int M){
+	
+  h = H;
+  m = M;
+	
+}
+
+void alarmize(int H, int M){
+	
+  ah = H;
+  am = M;
+  
+}
+
+void tempt(bool F){
+  
+  int temp = analogRead(tempSensor)*4.88;
+          
+  temp = temp-500;
+  temp = temp/10;       
+  if(!F){
+  	TempSignal = temp;
+  }
+  else{
+    TempSignal = temp*1.8 + 32;
+  }
+  
+}
+
+void hoursw(bool hs){
+
+  if(hs){
+    if(h>12){
+    	h = h - 12;
+      	sun = " PM";
+    }
+    else{
+    	sun = " AM";
+    }
+  }
+  else{
+    if(sun == " PM"){
+    	h = h + 12;
+    }
+    sun = "   ";
+  }
+  
+
+}
+
+void but1(){
+	
+  if (digitalRead(button1) == HIGH) {
+
+		if (buttonOn1 == false) {
+
+			buttonOn1 = true;
+			buttonTimer = millis();
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding1 == false)) {
+
+			isHolding1 = true;
+
+          timesetup = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn1 == true) {
+
+			if (isHolding1 == true) {
+
+				isHolding1 = false;
+
+			} else {
+
+              	hoursw(hourSwitch);
+              	hourSwitch = !hourSwitch;
+
+			}
+
+			buttonOn1 = false;
+
+		}
+
+	}
+
+}
+
+void but1alt(){
+	
+  if (digitalRead(button1) == HIGH) {
+
+		if (buttonOn1a == false) {
+
+			buttonOn1a = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding1a == false)) {
+
+			isHolding1a = true;
+			
+		}
+    	
+
+	} else {
+
+		if (buttonOn1a == true) {
+
+			if (isHolding1a == true) {
+
+				isHolding1a = false;
+
+			} else {
+
+              	count++;
+
+			}
+
+			buttonOn1a = false;
+
+		}
+
+	}
+
+}
+
+
+void but2(){
+	
+  if (digitalRead(button2) == HIGH) {
+
+		if (buttonOn2 == false) {
+
+			buttonOn2 = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding2 == false)) {
+
+			isHolding2 = true;
+			timesetupa=true;
+          
+		}
+    	
+
+	} else {
+
+		if (buttonOn2 == true) {
+
+			if (isHolding2 == true) {
+
+				isHolding2 = false;
+
+			} else {
+              	AlarmON = !AlarmON;
+
+			}
+
+			buttonOn2 = false;
+
+		}
+
+	}
+
+}
+
+void but2a(){
+	
+  if (digitalRead(button2) == HIGH) {
+
+		if (buttonOn2aa == false) {
+
+			buttonOn2aa = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding2aa == false)) {
+
+			isHolding2aa = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn2aa == true) {
+
+			if (isHolding2aa == true) {
+
+				isHolding2aa = false;
+
+			} else {
+              	counta++;
+
+			}
+
+			buttonOn2aa = false;
+
+		}
+
+	}
+
+}
+
+void but3altah(){
+	
+  if (digitalRead(button3) == HIGH) {
+
+		if (buttonOn2a == false) {
+
+			buttonOn2a = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding2a == false)) {
+
+			isHolding2a = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn2a == true) {
+
+			if (isHolding2a == true) {
+
+				isHolding2a = false;
+
+			} else {
+              	ah++;
+
+			}
+
+			buttonOn2a = false;
+
+		}
+
+	}
+
+}
+
+void but3altam(){
+	
+  if (digitalRead(button3) == HIGH) {
+
+		if (buttonOn2b == false) {
+
+			buttonOn2b = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding2b == false)) {
+
+			isHolding2b = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn2b == true) {
+
+			if (isHolding2b == true) {
+
+				isHolding2b = false;
+
+			} else {
+
+              	am++;
+
+			}
+
+			buttonOn2b = false;
+
+		}
+
+	}
+
+}
+
+void but3alth(){
+	
+  if (digitalRead(button3) == HIGH) {
+
+		if (buttonOn3a == false) {
+
+			buttonOn3a = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding3a == false)) {
+
+			isHolding3a = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn3a == true) {
+
+			if (isHolding3a == true) {
+
+				isHolding3a = false;
+
+			} else {
+
+              	h++;
+
+			}
+
+			buttonOn3a = false;
+
+		}
+
+	}
+
+}
+
+void but3altm(){
+	
+  if (digitalRead(button3) == HIGH) {
+
+		if (buttonOn3b == false) {
+
+			buttonOn3b = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding3b == false)) {
+
+			isHolding3b = true;
+
+		}
+    	
+
+	} else {
+
+		if (buttonOn3b == true) {
+
+			if (isHolding3b == true) {
+
+				isHolding3b = false;
+
+			} else {
+
+              	m++;
+
+			}
+
+			buttonOn3b = false;
+
+		}
+
+	}
+
+}
+
+void but4(){
+	
+  if (digitalRead(button4) == HIGH) {
+
+		if (buttonOn4 == false) {
+
+			buttonOn4 = true;
+			buttonTimer = millis();
+
+		}
+
+		if ((millis() - buttonTimer > buttonHold) && (isHolding4 == false)) {
+
+			isHolding4 = true;
+		}
+    	
+
+	} else {
+
+		if (buttonOn4 == true) {
+
+			if (isHolding4 == true) {
+
+				isHolding4 = false;
+
+			} else {
+
+              	am = am + 5;
+              	if(am >= 60){
+              		ah ++;
+                	am = am%60;
+                  	whatIf++;
+                  	whatIf--;
+              	}
+              	digitalWrite(7,LOW);
+			}
+
+			buttonOn4 = false;
+
+		}
+
+	}
+
+}
+
+
+void setup(){
+
+ lcd.begin(16,2);
+ pinMode(7, OUTPUT);
+ TCCR0A|=(1<<WGM01);
+ OCR0A=0xF9;
+ TIMSK0|=(1<<OCIE0A);
+ sei();
+ TCCR0B|=(1<<CS01);
+ TCCR0B|=(1<<CS00);
+ 
+ hourize(15,20);
+ alarmize(15,21); 
+}
+
+void loop(){
+  
+  lcd.setCursor(0,0);
+  lcd.print(h/10);
+  lcd.print(h%10);
+  lcd.print(":");
+  lcd.print(m/10);
+  lcd.print(m%10);
+  lcd.print(sun);
+  
+  if(s >= 60){
+  	m++;
+    s = 0;
+  } 
+  if(m >= 60){
+  	h++;
+    m = 0;
+  } 
+  if(timesetup==false){
+ 	count=0;
+   but1();
+   
+  }
+  else{
+    but1alt();
+    if(count==0){}
+    if(count==1){
+   		
+    	but3alth();
+      if(h>=24){h=0;}
+    	lcd.setCursor(0,0);
+    	lcd.print("  ");
+    }
+    if (count==2){
+    	
+    	but3altm();
+      if(m>=60){m=0;}
+    	lcd.setCursor(3,0);
+    	lcd.print("  ");
+    }
+    if (count>=3){
+    
+      timesetup = false;
+    }
+    
+  }
+  
+  if(timesetupa==false){
+ 	counta=0;
+   
+   but2();
+  }
+  else{
+    but2a();
+    if(counta==0){}
+    if(counta==1){
+   		
+    	but3altah();
+      if(ah>=24){ah=0;}
+    	lcd.setCursor(11,0);
+    	lcd.print("  ");
+    }
+    if (counta==2){
+    	
+    	but3altam();
+      if(am>=60){am=0;}
+    	lcd.setCursor(14,0);
+    	lcd.print("  ");
+    }
+    if (counta>=3){
+    
+      timesetupa = false;
+    }
+    
+    
+  }
+  
+  lcd.setCursor(11,0);
+  lcd.print(ah/10);
+  lcd.print(ah%10);
+  lcd.print(":");
+  lcd.print(am/10);
+  lcd.print(am%10);
+
+  but4();
+  if(h == ah && m == am && AlarmON == true){  
+  	digitalWrite(7, HIGH);
+  }
+  
+  lcd.setCursor(13,1);
+  if(AlarmON) lcd.print("ON ");
+  else lcd.print("OFF");
+  
+  tempt(false);
+ 
+  lcd.setCursor(0,1); 	
+  lcd.print(TempSignal);
+  if(!f) lcd.print(" C");
+  else lcd.print(" F");
+  lcd.print(" ");
+
+}
+
+ISR(TIMER0_COMPA_vect)
+{
+  
+  if(tt < 1000){
+    tt++;
+  }
+  else{
+ 	tt = 0;
+    s++;
+  }
+ 
+}
